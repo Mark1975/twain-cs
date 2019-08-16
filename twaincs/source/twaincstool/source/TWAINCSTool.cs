@@ -2063,6 +2063,15 @@ namespace TWAINWorkingGroupToolkit
             #region TWAIN.TWSX.MEMORY
             else if (m_twsxXferMech == TWAIN.TWSX.MEMORY)
             {
+                sts = m_twain.DatImageinfo( TWAIN.DG.IMAGE, TWAIN.MSG.GET, ref twimageinfo );
+                if( sts != TWAIN.STS.SUCCESS )
+                {
+                    WriteOutput( "ImageInfo failed: " + sts + Environment.NewLine );
+                    m_twain.Rollback( m_stateAfterScan );
+                    ReportImage( "ScanCallback: 011.1", TWAIN.DG.IMAGE.ToString(), TWAIN.DAT.IMAGEINFO.ToString(), TWAIN.MSG.GET.ToString(), sts, null, null, null, null, 0 );
+                    return ( TWAIN.STS.SUCCESS );
+                }
+
                 Bitmap bitmap;
                 byte[] abImage = null;
                 IntPtr intptrTotalAllocated;
