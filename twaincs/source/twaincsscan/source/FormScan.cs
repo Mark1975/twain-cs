@@ -533,7 +533,7 @@ namespace TWAINCSScan
             szStatus = "";
             szCapability = "CAP_INDICATORS,TWON_ONEVALUE,TWTY_BOOL," + (m_blIndicators?"1":"0");
             sts = m_twaincstoolkit.Send("DG_CONTROL", "DAT_CAPABILITY", "MSG_SET", ref szCapability, ref szStatus);
-            if (sts != TWAIN.STS.SUCCESS)
+            if (sts != TWAIN.STS.SUCCESS && sts != TWAIN.STS.CAPUNSUPPORTED )
             {
                 m_blExit = true;
                 return;
