@@ -2663,7 +2663,7 @@ namespace TWAINWorkingGroupToolkit
 
                     // Handle uncompressed grayscale images...
                     #region Handle uncompressed grayscale images...
-                    else if (twimageinfo.BitsPerPixel == 8)
+                    else if (twimageinfo.BitsPerPixel == 8 || twimageinfo.BitsPerPixel == 16 )
                     {
                         try
                         {
@@ -2685,7 +2685,7 @@ namespace TWAINWorkingGroupToolkit
                             }
 
                             // Create a TIFF header...
-                            tiffgrayscaleuncompressed = new TiffGrayscaleUncompressed((uint)twimageinfo.ImageWidth, (uint)twimageinfo.ImageLength, (uint)twimageinfo.XResolution.Whole, (uint)intptrTotalXfer);
+                            tiffgrayscaleuncompressed = new TiffGrayscaleUncompressed((uint)twimageinfo.ImageWidth, (uint)twimageinfo.ImageLength, (uint)twimageinfo.XResolution.Whole, (uint)intptrTotalXfer, ( uint )twimageinfo.BitsPerPixel );
 
                             // Create memory for the TIFF header...
                             intptrTiff = Marshal.AllocHGlobal(Marshal.SizeOf(tiffgrayscaleuncompressed));
@@ -3411,7 +3411,7 @@ namespace TWAINWorkingGroupToolkit
         private struct TiffGrayscaleUncompressed
         {
             // Constructor...
-            public TiffGrayscaleUncompressed(uint a_u32Width, uint a_u32Height, uint a_u32Resolution, uint a_u32Size)
+            public TiffGrayscaleUncompressed(uint a_u32Width, uint a_u32Height, uint a_u32Resolution, uint a_u32Size, uint bitsPerPixel)
             {
                 // Header...
                 u16ByteOrder = 0x4949;
@@ -3426,7 +3426,7 @@ namespace TWAINWorkingGroupToolkit
                 tifftagSubFileType = new TiffTag(255, 3, 1, 1);
                 tifftagImageWidth = new TiffTag(256, 4, 1, a_u32Width);
                 tifftagImageLength = new TiffTag(257, 4, 1, a_u32Height);
-                tifftagBitsPerSample = new TiffTag(258, 3, 1, 8);
+                tifftagBitsPerSample = new TiffTag(258, 3, 1, bitsPerPixel);
                 tifftagCompression = new TiffTag(259, 3, 1, 1);
                 tifftagPhotometricInterpretation = new TiffTag(262, 3, 1, 1);
                 tifftagStripOffsets = new TiffTag(273, 4, 1, 198);
